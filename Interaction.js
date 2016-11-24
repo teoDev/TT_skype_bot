@@ -1,6 +1,6 @@
 var builder = require('botbuilder');
 var restify = require ('restify');
-var githubClient = require('./github-client.js');
+var githubClient = require('./client/github-client.js');
 
 var connector = new builder.ChatConnector();
 var bot = new builder.UniversalBot(connector);
@@ -19,6 +19,7 @@ else{
 },
 function(session, result, next){
 var query = result.response;
+console.log(query);
 if(!query){
     session.endDialog('Request cancelled');
 }else {

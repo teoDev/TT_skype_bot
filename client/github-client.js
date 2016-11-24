@@ -4,10 +4,12 @@ var https = require('https');
 module.exports = {
 
     executeSearch: function (query, callback) {
+        console.log('**1 '+ '/search/users?q=' + querystring.escape(query));
         this.loadData('/search/users?q=' + querystring.escape(query), callback);
     },
 
     loadProfile: function (username, callback) {
+        console.log('**2');
         this.loadData('/users/' + querystring.escape(username), callback);
     },
 
@@ -24,6 +26,7 @@ module.exports = {
 
         var profile
         var request = https.request(options, function (respons) {
+            console.log('this is response '+ respons);
             var data = '';
             respons.on('data', function (chunk) { data += chunk; });
             respons.on('end', function () {
