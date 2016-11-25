@@ -16,8 +16,7 @@ var timeToEnd = endWorkTime - currentTime;
 bot.dialog('/endWork', [
     function (session, results) {
         var hoursLeft = (timeToEnd / 60);
-        var cards = createCard(session);
-        //builder.Prompts.choice(session, 'What profile did you want to load', usernames);
+     
 
         var msg = new builder.Message(session)
             .text(parseInt(hoursLeft) + 'h ' + (timeToEnd % 60) + "min until end of the work")
@@ -29,6 +28,22 @@ bot.dialog('/endWork', [
         //session.send(parseInt(hoursLeft)+'h '+(timeToEnd%60)+"min until end of the work");
 
 
+        session.endDialog();
+    }
+]);
+
+
+
+bot.dialog('/multi', [
+    function (session, results) {
+       // for(;;){
+        builder.Prompts.choice(session, 'What answer did you want to load', ["red","green","blue"]);
+        session.beginDialog('/multi');
+        // next();
+      // if(result.response.entity !='red'){
+       //    next();
+      // } 
+       //}
         session.endDialog();
     }
 ]);
@@ -68,7 +83,7 @@ dialog.matches(/^search/i, [
                 } else {
                     session.dialogData.property = null;
                     var usernames = profiles.items.map(function (item) { return item.login });
-                    console.log(usernames.length);
+                    console.log('********** '+usernames);
                     if (usernames.length == 1) {
                         session.send(usernames[0]);
                     } else {
@@ -105,6 +120,19 @@ dialog.matches(/^bored/, [
         session.beginDialog('/sendStupidPage');
     },
     function (session, result) {
+        session.endDialog();
+    }
+
+]);
+
+
+dialog.matches(/^multi/, [
+
+    function (session) {
+        session.beginDialog('/multi');
+    },
+    function (session, result) {
+        console.log('#####'+result.response.entity);
         session.endDialog();
     }
 
