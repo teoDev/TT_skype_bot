@@ -10,7 +10,7 @@ var day = new Date();
 var hour = day.getHours();
 var min = day.getMinutes();
 var currentTime = (hour * 60) + min;
-var endWorkTime = 1440;
+var endWorkTime = 1080;
 var timeToEnd = endWorkTime - currentTime;
 
 bot.dialog('/endWork', [
@@ -63,10 +63,6 @@ dialog.matches(/^search/i, [
             //
             builder.Prompts.text(session, ' Who do you want to search');
         }
-        else {
-            var query = session.message.text.substring(7);
-            next({ response: query });
-        }
     },
     function (session, result, next) {
         var query = result.response;
@@ -74,9 +70,10 @@ dialog.matches(/^search/i, [
         if (!query) {
             session.endDialog('Request cancelled');
         } else {
-            githubClient.executeSearch(query, function (profiles) {
-                var totalCount = profiles.total_count;
-                if (totalCount == 0) {
+            githubClient.executeSearchHttp(query, function (profiles) {
+                //var totalCount = profiles.total_count;
+                console.log("this is count *** "+profiles);
+               /* if (totalCount == 0) {
                     session.endDialog('Sorry no results found');
                 } else if (totalCount > 10) {
                     session.endDialog('More than 10 results were found. Please provide a more restrictive query.');
@@ -89,7 +86,7 @@ dialog.matches(/^search/i, [
                     } else {
                         builder.Prompts.choice(session, 'What answer did you want to load', usernames);
                     }
-                }
+                }*/
             });
         }
     }, function (session, result, next) {
